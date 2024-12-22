@@ -15,7 +15,7 @@ export function ExerciseCard({ ...rest }: Props) {
   return (
     <TouchableOpacity {...rest}>
       <HStack
-        bg="$gray500"
+        bg="$primary800"
         rounded="$sm"
         alignItems="center"
         p="$0"
@@ -49,7 +49,7 @@ export function ExerciseCard({ ...rest }: Props) {
           </Text>
         </VStack>
 
-        <Icon as={ChevronRight} color="$gray300" size="lg" />
+        <Icon as={ChevronRight} color="$primary100" size="lg" />
       </HStack>
     </TouchableOpacity>
   );

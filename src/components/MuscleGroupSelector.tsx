@@ -12,7 +12,7 @@ export function MuscleGroupSelector({ name, isActive, ...rest }: Props) {
       mr="$3"
       minWidth="$24"
       h="$10"
-      bg="$gray600"
+      bg="$primary900"
       rounded="$md"
       justifyContent="center"
       alignItems="center"

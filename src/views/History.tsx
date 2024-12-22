@@ -27,7 +27,7 @@ export function History() {
         renderItem={({ item }) => <HistoryCard />}
         renderSectionHeader={({ section }) => (
           <Heading
-            color="$gray200"
+            color="$primary100"
             fontFamily="$heading"
             fontSize="$md"
             mt="$10"

@@ -9,7 +9,8 @@ export function HomeHeader() {
       bg="$primary900"
       pt="$16"
       pb="$5"
-      px="$6"
+      pl="$6"
+      pr="$8"
       alignItems="center"
       gap="$4"
     >
@@ -29,7 +30,7 @@ export function HomeHeader() {
         </Heading>
       </VStack>
 
-      <Icon as={LogOut} color="$gray200" size="xl" />
+      <Icon as={LogOut} color="$gray300" size="xl" />
     </HStack>
   );
 }
