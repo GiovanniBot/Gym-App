@@ -1,3 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
+
+import { AppNavigationRoutesProps } from "@routes/app.routes";
+
 import { useState } from "react";
 import { FlatList } from "react-native";
 import { HStack, Heading, Text, VStack } from "@gluestack-ui/themed";
@@ -24,6 +28,12 @@ export function Home() {
     "Skull Crusher",
     "French Press",
   ]);
+
+  const navigation = useNavigation<AppNavigationRoutesProps>();
+
+  function handleOpenExerciseDetails() {
+    navigation.navigate("Exercise");
+  }
 
   return (
     <VStack flex={1}>
@@ -59,7 +69,9 @@ export function Home() {
         <FlatList
           data={exercises}
           keyExtractor={(item) => item}
-          renderItem={({ item }) => <ExerciseCard />}
+          renderItem={({ item }) => (
+            <ExerciseCard onPress={handleOpenExerciseDetails} />
+          )}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 45 }}
         />
