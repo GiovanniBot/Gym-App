@@ -1,3 +1,5 @@
+import { Platform } from "react-native";
+
 import {
   createBottomTabNavigator,
   BottomTabNavigationProp,
@@ -12,7 +14,6 @@ import { Home } from "@views/Home";
 import { Exercise } from "@views/Exercise";
 import { History } from "@views/History";
 import { Profile } from "@views/Profile";
-import { Platform } from "react-native";
 
 type AppRoutes = {
   Home: undefined;
@@ -73,12 +74,12 @@ export function AppRoutes() {
           ),
         }}
       />
-      {/* 
+
       <Screen
         name="Exercise"
         component={Exercise}
         options={{ tabBarButton: () => null }}
-      /> */}
+      />
     </Navigator>
   );
 }
