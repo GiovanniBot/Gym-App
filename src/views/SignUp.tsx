@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   VStack,
   Image,
@@ -5,9 +6,11 @@ import {
   Text,
   Heading,
   ScrollView,
+  useToast,
 } from "@gluestack-ui/themed";
-
-import { useNavigation } from "@react-navigation/native";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import { AuthNavigationRoutesProps } from "@routes/auth.routes";
 
@@ -17,11 +20,53 @@ import Logo from "@assets/logo.svg";
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
 
+type FormDataProps = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const signUpSchema = yup.object().shape({
+  name: yup.string().required("Name field is required."),
+  email: yup
+    .string()
+    .required("E-mail field is required.")
+    .email("Invalid email address"),
+  password: yup
+    .string()
+    .required("Password is required.")
+    .min(8, "Password must be at least 8 characters."),
+  confirmPassword: yup
+    .string()
+    .required("Please confirm your password.")
+    .oneOf([yup.ref("password"), ""], "Passwords must match."),
+});
+
 export function SignUp() {
   const navigation = useNavigation<AuthNavigationRoutesProps>();
 
-  function handleSignIn() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataProps>({
+    resolver: yupResolver(signUpSchema),
+  });
+
+  const toast = useToast();
+
+  function handleGoToSignIn() {
     navigation.goBack();
+  }
+
+  function handleSignUp({
+    name,
+    email,
+    password,
+    confirmPassword,
+  }: FormDataProps) {
+    console.log({ name, email, password, confirmPassword });
   }
 
   return (
@@ -50,19 +95,75 @@ export function SignUp() {
               Sign up
             </Heading>
 
-            <Input placeholder="Name" autoCapitalize="words" />
-            <Input
-              placeholder="E-mail"
-              keyboardType="email-address"
-              autoCapitalize="none"
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="Name"
+                  autoCapitalize="words"
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={errors.name?.message}
+                />
+              )}
             />
-            <Input placeholder="Password" secureTextEntry />
-            <Input placeholder="Confirm password" secureTextEntry />
 
-            <Button title="Create account" my="$4" />
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="E-mail"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={errors.email?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="Password"
+                  autoCapitalize="none"
+                  secureTextEntry
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={errors.password?.message}
+                />
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="Confirm password"
+                  autoCapitalize="none"
+                  secureTextEntry
+                  onChangeText={onChange}
+                  value={value}
+                  onSubmitEditing={handleSubmit(handleSignUp)}
+                  returnKeyType="send"
+                  errorMessage={errors.confirmPassword?.message}
+                />
+              )}
+            />
+
+            <Button
+              title="Create account"
+              my="$4"
+              onPress={handleSubmit(handleSignUp)}
+            />
           </Center>
 
-          <Center pt={30}>
+          <Center pt={24} mb="$24">
             <Text color="$gray200" fontSize="$md">
               Already have an account?
             </Text>
@@ -70,7 +171,7 @@ export function SignUp() {
               color="$primary300"
               fontSize="$lg"
               underline
-              onPress={handleSignIn}
+              onPress={handleGoToSignIn}
             >
               Sign in
             </Text>
